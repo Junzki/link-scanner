@@ -15,13 +15,6 @@
 #ifndef LINK_SCANNER_SCANNER_H
 #define LINK_SCANNER_SCANNER_H
 
-#define join_path(out, base, name) do { \
-    strcat(out, base);  \
-    strcat(out, "/");   \
-    strcat(buf, name);  \
-} while(0);
-
-
 typedef struct scan_context {
     std::queue<const char *> result;
     std::mutex               mutex;

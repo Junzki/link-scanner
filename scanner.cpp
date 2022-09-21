@@ -46,7 +46,7 @@ scanner::iterate_directory(scan_context *context,
 
         std::thread::id thread_id = std::this_thread::get_id();
 
-        // join_path(next, path, entry->d_name);
+        // Join path: path/d_name
         strcat(next, path);
         strcat(next, "/"); 
         strcat(next, entry->d_name);
