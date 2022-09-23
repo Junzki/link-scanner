@@ -49,24 +49,12 @@ public:
     }
 
     std::thread init_worker() {
-        std::thread thread([this]() {
-            while (this->alive) {
-                if (this->queue.empty()) {
-                    std::this_thread::sleep_for(std::chrono::milliseconds(100));
-                    continue;
-                }
-
-                this->queue_lock.lock();
-                auto front = this->queue.front();
-                this->queue.pop();
-                this->queue_lock.unlock();
-
-                this->iterate_directory(front.context, front.path);
-            }
-        });
+        std::thread thread(this->worker, this);
 
         return thread;
     }
+
+    inline static void worker(scanner *self);
 
     int stat_file(const char *);
     void iterate_directory(scan_context *, const char *);

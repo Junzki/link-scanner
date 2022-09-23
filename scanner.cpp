@@ -4,6 +4,24 @@
 #include "scanner.h"
 
 
+void
+scanner::worker(scanner *self) {
+    while (self->alive) {
+        if (self->queue.empty()) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            continue;
+        }
+
+        self->queue_lock.lock();
+        auto front = self->queue.front();
+        self->queue.pop();
+        self->queue_lock.unlock();
+
+        self->iterate_directory(front.context, front.path);
+    }
+}
+
+
 int 
 scanner::stat_file(const char *path) {
     static struct stat buf_;
